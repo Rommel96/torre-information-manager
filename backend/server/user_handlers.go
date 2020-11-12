@@ -51,7 +51,16 @@ func getJobInfo(c *gin.Context) {
 
 func saveJob(c *gin.Context) {
 	email := c.MustGet("email").(string)
-	jobId := c.Param("id")
+	var job models.Job
+	if err := c.ShouldBindJSON(&job); err != nil {
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, models.MsgResponse{
+				Status:  models.StatusError,
+				Message: models.BodyRequest,
+			})
+			return
+		}
+	}
 	user, err := repository.FindUserFromLogin(models.LoginModel{
 		Email: email,
 	})
@@ -62,10 +71,7 @@ func saveJob(c *gin.Context) {
 		})
 		return
 	}
-	job := models.Job{
-		Id:     jobId,
-		UserId: user.Id,
-	}
+	job.UserId = user.Id
 	err = repository.InsertJob(&job)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, models.MsgResponse{
@@ -112,5 +118,31 @@ func removeJob(c *gin.Context) {
 	c.JSON(http.StatusOK, models.MsgResponse{
 		Status:  models.StatusOk,
 		Message: job,
+	})
+}
+
+func getFavorites(c *gin.Context) {
+	email := c.MustGet("email").(string)
+	user, err := repository.FindUserFromLogin(models.LoginModel{
+		Email: email,
+	})
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, models.MsgResponse{
+			Status:  models.StatusError,
+			Message: models.UserNotFound,
+		})
+		return
+	}
+	jobs, err := repository.FindFavorites(user.Id)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, models.MsgResponse{
+			Status:  models.StatusError,
+			Message: err,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, models.MsgResponse{
+		Status:  models.StatusOk,
+		Message: jobs,
 	})
 }

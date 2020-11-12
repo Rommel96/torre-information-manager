@@ -3,6 +3,7 @@ package server
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -32,11 +33,12 @@ func Run() {
 		userRoutes.GET("/torre-job/:id", getJobInfo)
 		/*My API*/
 		//userRoutes.GET("/apply/:id", apply) /*https://torre.co/en/jobs/:id*/ // THIS FRONTEND DIRECTLY
-		userRoutes.POST("/job/:id", saveJob)
+		userRoutes.POST("/job", saveJob)
+		userRoutes.GET("/job", getFavorites)
 		userRoutes.DELETE("/job/:id", removeJob)
 
 	}
-	log.Fatal(r.Run(":3000"))
+	log.Fatal(r.Run(":" + os.Getenv("PORT")))
 }
 
 func searchTorreApi(c *gin.Context) {
