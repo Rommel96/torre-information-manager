@@ -3,7 +3,7 @@ import FavoriteItem from "./FavoriteItem";
 import useUser from "../hooks/useUser";
 
 export default function Favorites() {
-  const { errorMessage, getSavedJobs, favorites } = useUser();
+  const { getSavedJobs, favorites } = useUser();
   useEffect(() => {
     console.log("fav: ", favorites);
     getSavedJobs();

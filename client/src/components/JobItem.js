@@ -18,10 +18,6 @@ export default function JobItem(props) {
 
   const addFavorite = async () => {
     console.log("jwt: ", jwt);
-    const config = {
-      headers: { Authorization: `Bearer ${jwt}` },
-      validateStatus: null,
-    };
     const instance = Axios.create({
       validateStatus: null,
     });
@@ -87,14 +83,11 @@ export default function JobItem(props) {
                 href={"https://torre.co/en/jobs/" + id}
                 className="btn btn-success mx-1"
                 target="_blank"
+                rel="noreferrer"
               >
                 Apply
               </a>
-              <a
-                onClick={addFavorite}
-                className="btn btn-info mx-1"
-                target="_blank"
-              >
+              <a onClick={addFavorite} className="btn btn-info mx-1">
                 Saved
               </a>
             </div>

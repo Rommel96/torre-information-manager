@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function FavoriteItem(props) {
   const { job } = props;
@@ -29,6 +28,7 @@ export default function FavoriteItem(props) {
             href={"https://torre.co/en/jobs/" + jobId}
             className="btn btn-success mx-1"
             target="_blank"
+            rel="noreferrer"
           >
             Apply
           </a>

@@ -15,6 +15,7 @@ export default function UserItem(props) {
           href={"https://bio.torre.co/en/" + username}
           className="btn btn-primary"
           target="_blank"
+          rel="noreferrer"
         >
           See Profile
         </a>
